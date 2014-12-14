@@ -1,0 +1,156 @@
+<template name="afisha">
+
+  <div class="container-fluid afisha">
+
+    <div class="afisha-header"><div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        {{#linkTo route="afishaIndex"}}Афиша{{/linkTo}} 
+        {{#linkTo route="afishaArchive"}}Архив{{/linkTo}} 
+        {{#if currentUser}}{{#linkTo route="afishaNew"}}Добавить{{/linkTo}}{{/if}} 
+        {{> loginButtons}}
+      </div>
+    </div></div>
+
+    <div class="afisha-main"><div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        {{>yield}}
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="afisha-sidebar">&nbsp;</div>
+      </div>
+    </div></div>
+
+    <div class="afisha-footer"><div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        ©
+      </div>
+    </div></div>
+
+  </div>
+
+</template>
+
+
+
+<template name="afishaIndex">
+
+  <div class="afisha-index-list"><div class="row">
+    <div class="col-md-push-1 col-lg-push-1 col-xs-11 col-sm-12 col-md-10 col-lg-10">
+      {{#each events}}
+        <div class="afisha-index-list-item">
+          {{#linkTo route="afishaSingle"}}{{title}}{{/linkTo}}<br />
+          {{#unless allDay}}not allDay{{else}}allDay{{/unless}}<br />
+          Место: {{place}}<br />
+          Год: {{time.year}}<br />
+          Месяц: {{time.month}}<br />
+          День недели: {{time.weekday}}<br />
+          День: {{time.day}}<br />
+          Время: {{time.hours}}:{{time.minutes}}<br />
+          {{#if canEditEvent}}<a href="{{pathFor 'afishaEdit'}}">Edit</a>{{/if}}
+        </div>
+      {{/each}}
+    </div>
+  </div></div>
+
+</template>
+
+
+
+<template name="afishaArchive">
+
+  <div class="afisha-archive-list"><div class="row">
+    <div class="col-md-push-1 col-lg-push-1 col-xs-11 col-sm-12 col-md-10 col-lg-10">
+      {{#each events}}
+        <div class="afisha-archive-list-item">
+          {{#linkTo route="afishaSingle"}}{{title}}{{/linkTo}}<br />
+          {{#unless allDay}}not allDay{{else}}allDay{{/unless}}<br />
+          Место: {{place}}<br />
+          Год: {{time.year}}<br />
+          Месяц: {{time.month}}<br />
+          День недели: {{time.weekday}}<br />
+          День: {{time.day}}<br />
+          Время: {{time.hours}}:{{time.minutes}}<br />
+          {{#if canEditEvent}}<a href="{{pathFor 'afishaEdit'}}">Edit</a>{{/if}}
+        </div>
+      {{/each}}
+    </div>
+  </div></div>
+
+</template>
+
+
+
+<template name="afishaSingle">
+
+  <div class="afisha-index-single"><div class="row">
+    <div class="col-md-push-1 col-lg-push-1 col-xs-11 col-sm-12 col-md-10 col-lg-10">
+      <div class="afisha-index-single-header">
+        {{title}}<br />
+        {{#unless allDay}}not allDay{{else}}allDay{{/unless}}<br />
+        Место: {{place}}<br />
+        Год: {{time.year}}<br />
+        Месяц: {{time.month}}<br />
+        День недели: {{time.weekday}}<br />
+        День: {{time.day}}<br />
+        Время: {{time.hours}}:{{time.minutes}}<br />
+        Картинка-афиша:<br />
+        <a href="{{picture}}"><img src="{{picture}}" /></a><br />
+        Описание (HTML):<br />
+        {{description}}<br />
+        submitTime:{{submitTime}}<br />
+        submitUser:{{submitUser}}<br />
+        {{#if canEditEvent}}<a href="{{pathFor 'afishaEdit'}}">Edit</a>{{/if}}
+      </div>
+    </div>
+  </div></div>
+
+</template>
+
+
+
+<template name="afishaNew">
+
+  <div class="afisha-index-list"><div class="row">
+    <div class="col-md-push-1 col-lg-push-1 col-xs-11 col-sm-12 col-md-10 col-lg-10">
+      <form>
+        title: <input name="title" type="text" value="" placeholder="" /><br />
+        allDay: <input type="checkbox" name="allDay" /><br />
+        place: <input name="place" type="text" value="" placeholder="" /><br />
+        time: <input type="date" name="date" value="2014-01-01" /><input type="time" name="time" min="0:00" max="23:59" step="60" value="00:00" /><br />
+        gmt: <input name="gmt" type="text" value="5" placeholder="" /><br />
+        picture: <input name="picture" type="text" value="" placeholder="" /><br />
+        description:<br />
+        <textarea name="description"></textarea><br />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </div></div>
+
+</template>
+
+
+
+<template name="afishaEdit">
+  <div class="afisha-index-edit"><div class="row">
+    <div class="col-md-push-1 col-lg-push-1 col-xs-11 col-sm-12 col-md-10 col-lg-10">
+      <form>
+        title: <input name="title" type="text" value="{{title}}" placeholder="" /><br />
+        allDay: <input type="checkbox" name="allDay" checked="{{allDay}}" /><br />
+        place: <input name="place" type="text" value="{{place}}" placeholder="" /><br />
+        time: <input type="date" name="date" value="{{time.year}}-{{time.month}}-{{time.day}}" /><input type="time" name="time" min="0:00" max="23:59" step="60" value="{{time.hours}}:{{time.minutes}}" /><br />
+        gmt: <input name="gmt" type="text" value="{{gmt}}" placeholder="" /><br />
+        picture: <input name="picture" type="text" value="{{picture}}" placeholder="" /><br />
+        description:<br />
+        <textarea name="description">{{description}}</textarea><br />
+        {{#linkTo route="afishaSingle"}}Перейти на страницу события{{/linkTo}}<br />
+        <input type="submit" value="Submit" /> <a class="btn btn-danger delete" href="#">Delete post</a>
+      </form>
+    </div>
+  </div></div>
+</template>
+
+
+
+<template name="afishaAccessDenied">
+  Access Denied
+</template>
